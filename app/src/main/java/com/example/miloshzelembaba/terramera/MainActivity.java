@@ -8,8 +8,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    private ArrayList<ActionableCard> actionableCards = new ArrayList<>();
+    private ActionableCardAdapter actionableCardAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +27,27 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        /* creating the adapter and adding the cards */
+        ActionableCard detectBedBugs = new ActionableCard(ActionableCardStrings.DETECTION_HEADER,
+                ActionableCardStrings.DECETION_TITLE, this);
+        ActionableCard treatBedBugs = new ActionableCard(ActionableCardStrings.TREATMENT_HEADER,
+                ActionableCardStrings.TREATMENT_TITLE, this);
+        ActionableCard preventBedBugs = new ActionableCard(ActionableCardStrings.PREVENTION_HEADER,
+                ActionableCardStrings.PREVENTION_TITLE, this);
+        actionableCards.add(detectBedBugs);
+        actionableCards.add(treatBedBugs);
+        actionableCards.add(preventBedBugs);
+
+        actionableCardAdapter = new ActionableCardAdapter(this, R.layout.actionable_card, actionableCards);
+
+        ListView listView = (ListView) findViewById(R.id.actionable_card_list);
+        listView.setAdapter(actionableCardAdapter);
+
+
+
+        //TODO: MAKE THIS SUPPORT BUTTON
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

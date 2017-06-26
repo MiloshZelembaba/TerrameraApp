@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="gravyGray">#4f4f4f</color>
+    <color name="headerGray">#383838</color>
+    <color name="greenCard">#a1d1a1</color>
+    <color name="cream">#ebefdc</color>
+    <color name="turqoise">#76bcb4</color>
+    <color name="haloBlue">#73b2d6</color>
 </resources>
