@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="gravyGray">#4f4f4f</color>
-    <color name="headerGray">#383838</color>
+    <color name="gravyGray">#576664</color>
+    <color name="headerGray">#3a4443</color>
     <color name="greenCard">#a1d1a1</color>
     <color name="cream">#ebefdc</color>
     <color name="turqoise">#76bcb4</color>

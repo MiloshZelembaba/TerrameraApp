@@ -1,5 +1,6 @@
 package com.example.miloshzelembaba.terramera;
 
+import android.app.Notification;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,12 +12,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private ArrayList<ActionableCard> actionableCards = new ArrayList<>();
+    private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
 
 
@@ -31,10 +33,14 @@ public class MainActivity extends AppCompatActivity {
         /* creating the adapter and adding the cards */
         ActionableCard detectBedBugs = new ActionableCard(ActionableCardStrings.DETECTION_HEADER,
                 ActionableCardStrings.DECETION_TITLE, this);
+        addDetectionInstructions(detectBedBugs);
         ActionableCard treatBedBugs = new ActionableCard(ActionableCardStrings.TREATMENT_HEADER,
                 ActionableCardStrings.TREATMENT_TITLE, this);
+        addTreatmentInstructions(treatBedBugs);
         ActionableCard preventBedBugs = new ActionableCard(ActionableCardStrings.PREVENTION_HEADER,
                 ActionableCardStrings.PREVENTION_TITLE, this);
+        addPreventionInstructions(preventBedBugs);
+        actionableCards.add(new Blurb());
         actionableCards.add(detectBedBugs);
         actionableCards.add(treatBedBugs);
         actionableCards.add(preventBedBugs);
@@ -64,6 +70,27 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void setUpLesson(String type, ActionableCard card){
+        card.changeLayoutColour(this);
+        showLesson(card);
+    }
+
+    public void showLesson(ActionableCard card){
+        Blurb blurb = new Blurb();
+        blurb.setTitle(card.getTitle());
+        ArrayList<Instruction> instructions = card.getInstructions();
+        ArrayList<ArrayItem> items = new ArrayList<>();
+        items.add(blurb);
+        for (Instruction i: instructions){
+            items.add(i);
+        }
+
+        LessonAdapter lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items);
+
+        ListView listView = (ListView) findViewById(R.id.actionable_card_list);
+        listView.setAdapter(lessonAdapter);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -77,5 +104,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addDetectionInstructions(ActionableCard card){
+        InstructionSet set = new InstructionSet();
+        Instruction step1 = new Instruction("Turn on your flashlight", "");
+        Instruction step2 = new Instruction("Go under your bed", "");
+        Instruction step3 = new Instruction("Freak out", "");
+        set.add(step1);
+        set.add(step2);
+        set.add(step3);
+
+        card.setInstructions(set);
+    }
+
+    private void addPreventionInstructions(ActionableCard card){
+        InstructionSet set = new InstructionSet();
+        Instruction step1 = new Instruction("Turn on your flashlight", "");
+        Instruction step2 = new Instruction("Go under your bed", "");
+        Instruction step3 = new Instruction("Freak out", "");
+        set.add(step1);
+        set.add(step2);
+        set.add(step3);
+
+        card.setInstructions(set);
+    }
+
+    private void addTreatmentInstructions(ActionableCard card){
+        InstructionSet set = new InstructionSet();
+        Instruction step1 = new Instruction("Turn on your flashlight", "");
+        Instruction step2 = new Instruction("Go under your bed", "");
+        Instruction step3 = new Instruction("Freak out", "");
+        set.add(step1);
+        set.add(step2);
+        set.add(step3);
+
+        card.setInstructions(set);
     }
 }

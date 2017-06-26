@@ -3,25 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="2dp"
-        android:textColor="@color/cream"
-        android:text="Steps to sanity"/>
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:id="@+id/actionable_card_list"
         android:divider="@android:color/transparent"
-        android:dividerHeight="5.0sp"
-        >
+        android:dividerHeight="5.0sp">
+    </ListView>
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:id="@+id/lesson_list"
+        android:visibility="gone"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5.0sp">
     </ListView>
 
 
