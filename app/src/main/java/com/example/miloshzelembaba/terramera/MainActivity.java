@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
+    private LessonAdapter lessonAdapter;
     private boolean mainPage = true;
 
 
@@ -91,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
             items.add(i);
         }
 
-        LessonAdapter lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items);
+        lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items);
+
+        card.getInstructionSet().setAdapter(lessonAdapter);
 
         ListView listView = (ListView) findViewById(R.id.actionable_card_list);
         listView.setAdapter(lessonAdapter);
@@ -114,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void addDetectionInstructions(ActionableCard card){
         InstructionSet set = new InstructionSet(card);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        set.setAdapter(lessonAdapter);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
+        step1.setAction(step1.FLASHLIGHT);
         Instruction step2 = new Instruction("Go under your bed", "", set);
         Instruction step3 = new Instruction("Freak out", "", set);
         Instruction step4 = new Instruction("Call for help", "", set);
@@ -130,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void addPreventionInstructions(ActionableCard card){
         InstructionSet set = new InstructionSet(card);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        set.setAdapter(lessonAdapter);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
+        step1.setAction(step1.FLASHLIGHT);
         Instruction step2 = new Instruction("Go under your bed", "", set);
         Instruction step3 = new Instruction("Freak out", "", set);
         Instruction step4 = new Instruction("Call for help", "", set);
@@ -146,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void addTreatmentInstructions(ActionableCard card){
         InstructionSet set = new InstructionSet(card);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        set.setAdapter(lessonAdapter);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
+        step1.setAction(step1.FLASHLIGHT);
         Instruction step2 = new Instruction("Go under your bed", "", set);
         Instruction step3 = new Instruction("Freak out", "", set);
         Instruction step4 = new Instruction("Call for help", "", set);

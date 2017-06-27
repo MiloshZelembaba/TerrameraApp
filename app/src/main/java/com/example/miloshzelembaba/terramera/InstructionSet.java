@@ -6,10 +6,11 @@ import java.util.ArrayList;
  * Created by miloshzelembaba on 6/26/17.
  */
 
-public class InstructionSet {
+public class  InstructionSet {
 
     ArrayList<Instruction> instructions = new ArrayList<>();
     ActionableCard card;
+    LessonAdapter lessonAdapter;
 
     public InstructionSet(ActionableCard card){
         this.card = card;
@@ -40,6 +41,14 @@ public class InstructionSet {
         }
 
         card.finish();
+    }
+
+    public void setAdapter(LessonAdapter lessonAdapter){
+        this.lessonAdapter = lessonAdapter;
+    }
+
+    public void invalidateAdapter(){
+        lessonAdapter.notifyDataSetChanged();
     }
 
 }

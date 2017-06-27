@@ -26,6 +26,10 @@ public class ActionableCard extends ArrayItem{
         context = c;
     }
 
+    public InstructionSet getInstructionSet(){
+        return set;
+    }
+
     public void setColour(int colour){
         this.colour = colour;
     }

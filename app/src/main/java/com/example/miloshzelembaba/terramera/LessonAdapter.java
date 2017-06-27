@@ -1,13 +1,21 @@
 package com.example.miloshzelembaba.terramera;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Camera;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -52,7 +60,7 @@ public class LessonAdapter extends ArrayAdapter {
         View v = convertView;
 
         int type = getItemViewType(position);
-        if (v == null){
+        if (true){ // TODO: should properly utilize viewHolder
             if (type == LESSON_CARD){
                 final Instruction card = (Instruction) lesson.get(position);
                 v = inflater.inflate(R.layout.minimal_lesson, parent, false);
@@ -62,9 +70,20 @@ public class LessonAdapter extends ArrayAdapter {
                 TextView minmalInstruction = v.findViewById(R.id.minimal_instructions);
                 minmalInstruction.setText(card.getMinimalInstruction());
 
+                if (card.completed){
+                    TextView tmp = (TextView) v.findViewById(R.id.completion);
+                    tmp.setText("C");
+                }
+
+                if (!card.note.equals("")){
+                    TextView tmp = (TextView) v.findViewById(R.id.note);
+                    tmp.setText(card.note);
+                }
+
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        card.setContext(activity);
                         card.finish();
                     }
                 });
@@ -79,4 +98,5 @@ public class LessonAdapter extends ArrayAdapter {
         return v;
 
     }
+
 }
