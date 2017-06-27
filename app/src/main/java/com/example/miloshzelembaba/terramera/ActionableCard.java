@@ -1,6 +1,7 @@
 package com.example.miloshzelembaba.terramera;
 
 import android.app.Activity;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class ActionableCard extends ArrayItem{
     private Activity context;
     public int colour;
     private InstructionSet set;
+    public boolean completed = false;
 
 
     public ActionableCard(String h, String t, Activity c){
@@ -47,5 +49,9 @@ public class ActionableCard extends ArrayItem{
 
     public ArrayList<Instruction> getInstructions(){
         return set.getInstructions();
+    }
+
+    public void finish(){
+        completed = true;
     }
 }

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class InstructionSet {
 
     ArrayList<Instruction> instructions = new ArrayList<>();
+    ActionableCard card;
+
+    public InstructionSet(ActionableCard card){
+        this.card = card;
+    }
 
 
     public void add(Instruction instruction){
@@ -25,6 +30,16 @@ public class InstructionSet {
 
     public ArrayList<Instruction> getInstructions(){
         return instructions;
+    }
+
+    public void stepCompleted(){
+        for (Instruction i: instructions){
+            if (!i.completed){
+                return;
+            }
+        }
+
+        card.finish();
     }
 
 }

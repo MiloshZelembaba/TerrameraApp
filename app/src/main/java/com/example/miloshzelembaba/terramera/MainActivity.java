@@ -113,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDetectionInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet();
-        Instruction step1 = new Instruction("Turn on your flashlight", "");
-        Instruction step2 = new Instruction("Go under your bed", "");
-        Instruction step3 = new Instruction("Freak out", "");
-        Instruction step4 = new Instruction("Call for help", "");
-        Instruction step5 = new Instruction("Leave the house", "");
+        InstructionSet set = new InstructionSet(card);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        Instruction step2 = new Instruction("Go under your bed", "", set);
+        Instruction step3 = new Instruction("Freak out", "", set);
+        Instruction step4 = new Instruction("Call for help", "", set);
+        Instruction step5 = new Instruction("Leave the house", "", set);
         set.add(step1);
         set.add(step2);
         set.add(step3);
@@ -129,12 +129,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addPreventionInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet();
-        Instruction step1 = new Instruction("Turn on your flashlight", "");
-        Instruction step2 = new Instruction("Go under your bed", "");
-        Instruction step3 = new Instruction("Freak out", "");
-        Instruction step4 = new Instruction("Call for help", "");
-        Instruction step5 = new Instruction("Leave the house", "");
+        InstructionSet set = new InstructionSet(card);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        Instruction step2 = new Instruction("Go under your bed", "", set);
+        Instruction step3 = new Instruction("Freak out", "", set);
+        Instruction step4 = new Instruction("Call for help", "", set);
+        Instruction step5 = new Instruction("Leave the house", "", set);
         set.add(step1);
         set.add(step2);
         set.add(step3);
@@ -145,12 +145,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addTreatmentInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet();
-        Instruction step1 = new Instruction("Turn on your flashlight", "");
-        Instruction step2 = new Instruction("Go under your bed", "");
-        Instruction step3 = new Instruction("Freak out", "");
-        Instruction step4 = new Instruction("Call for help", "");
-        Instruction step5 = new Instruction("Leave the house", "");
+        InstructionSet set = new InstructionSet(card);
+        Instruction step1 = new Instruction("Turn on your flashlight", "", set);
+        Instruction step2 = new Instruction("Go under your bed", "", set);
+        Instruction step3 = new Instruction("Freak out", "", set);
+        Instruction step4 = new Instruction("Call for help", "", set);
+        Instruction step5 = new Instruction("Leave the house", "", set);
         set.add(step1);
         set.add(step2);
         set.add(step3);

@@ -54,7 +54,7 @@ public class LessonAdapter extends ArrayAdapter {
         int type = getItemViewType(position);
         if (v == null){
             if (type == LESSON_CARD){
-                Instruction card = (Instruction) lesson.get(position);
+                final Instruction card = (Instruction) lesson.get(position);
                 v = inflater.inflate(R.layout.minimal_lesson, parent, false);
 
                 TextView stepNum = v.findViewById(R.id.step_num);
@@ -62,13 +62,12 @@ public class LessonAdapter extends ArrayAdapter {
                 TextView minmalInstruction = v.findViewById(R.id.minimal_instructions);
                 minmalInstruction.setText(card.getMinimalInstruction());
 
-//                v.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        ((MainActivity)activity).setUpLesson(((ActionableCard)lesson.get(position)).getHeader(),
-//                                ((ActionableCard)lesson.get(position)));
-//                    }
-//                });
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        card.finish();
+                    }
+                });
             } else {
                 Blurb blurb = (Blurb) lesson.get(position);
                 v = inflater.inflate(R.layout.lesson_header, parent, false);

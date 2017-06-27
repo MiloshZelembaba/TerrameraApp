@@ -9,10 +9,13 @@ public class Instruction extends ArrayItem {
     String stepNumber = "";
     String minimalInstruction = "";
     String detailedInstruction = "";
+    boolean completed = false;
+    InstructionSet instructionSet;
 
-    public Instruction(String m, String d){
+    public Instruction(String m, String d, InstructionSet is){
         minimalInstruction = m;
         detailedInstruction = d;
+        instructionSet = is;
     }
 
     public String getMinimalInstruction(){
@@ -21,6 +24,11 @@ public class Instruction extends ArrayItem {
 
     public String getStepNum(){
         return stepNumber;
+    }
+
+    public void finish(){
+        completed = true;
+        instructionSet.stepCompleted();
     }
 
 }
