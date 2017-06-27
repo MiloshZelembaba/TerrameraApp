@@ -2,15 +2,21 @@ package com.example.miloshzelembaba.terramera;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.widget.ListView;
 
@@ -29,11 +35,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    @TargetApi(Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        /* Set Transitions */
+        Explode explode = new Explode();
+        getWindow().setExitTransition(explode);
+
+        Slide slide = new Slide(Gravity.RIGHT);
+        getWindow().setReturnTransition(slide);
 
         /* creating the adapter and adding the cards */
         ActionableCard detectBedBugs = new ActionableCard(ActionableCardStrings.DETECTION_HEADER,
