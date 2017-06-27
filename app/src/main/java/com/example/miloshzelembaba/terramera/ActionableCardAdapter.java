@@ -65,8 +65,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)).getHeader(),
-                                ((ActionableCard)actionableCards.get(position)));
+                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
                     }
                 });
             } else {
