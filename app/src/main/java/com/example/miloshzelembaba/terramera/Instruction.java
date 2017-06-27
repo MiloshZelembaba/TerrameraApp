@@ -23,6 +23,7 @@ public class Instruction extends ArrayItem {
     private String action = "";
     private Context context;
     private boolean toggle = false;
+    public boolean minimal = true;
 
     /* ACTION STRINGS */
     public static final String FLASHLIGHT = "FLASHLIGHT";
@@ -44,6 +45,8 @@ public class Instruction extends ArrayItem {
         return minimalInstruction;
     }
 
+    public String getDetailedInstruction() { return detailedInstruction; }
+
     public String getStepNum(){
         return stepNumber;
     }
@@ -62,7 +65,7 @@ public class Instruction extends ArrayItem {
         this.action = action;
     }
 
-    private void performAction(){
+    public void performAction(){
         if (action.equals(FLASHLIGHT)){
             toggleFlashLight();
         }

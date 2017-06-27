@@ -11,11 +11,14 @@ public class  InstructionSet {
     ArrayList<Instruction> instructions = new ArrayList<>();
     ActionableCard card;
     LessonAdapter lessonAdapter;
+    boolean completed = false;
 
     public InstructionSet(ActionableCard card){
         this.card = card;
     }
 
+    public InstructionSet(){
+    }
 
     public void add(Instruction instruction){
         instructions.add(instruction);
@@ -40,7 +43,8 @@ public class  InstructionSet {
             }
         }
 
-        card.finish();
+        completed = true;
+        //card.finish();
     }
 
     public void setAdapter(LessonAdapter lessonAdapter){

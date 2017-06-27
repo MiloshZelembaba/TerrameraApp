@@ -11,6 +11,8 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,10 +72,10 @@ public class LessonAdapter extends ArrayAdapter {
                 TextView minmalInstruction = v.findViewById(R.id.minimal_instructions);
                 minmalInstruction.setText(card.getMinimalInstruction());
 
-                if (card.completed){
-                    TextView tmp = (TextView) v.findViewById(R.id.completion);
-                    tmp.setText("C");
-                }
+//                if (card.completed){
+//                    TextView tmp = (TextView) v.findViewById(R.id.completion);
+//                    tmp.setText("C");
+//                }
 
                 if (!card.note.equals("")){
                     TextView tmp = (TextView) v.findViewById(R.id.note);
@@ -84,7 +86,18 @@ public class LessonAdapter extends ArrayAdapter {
                     @Override
                     public void onClick(View view) {
                         card.setContext(activity);
-                        card.finish();
+                        if (card.minimal && !card.getDetailedInstruction().isEmpty()) {
+                            TextView minmalInstruction = view.findViewById(R.id.minimal_instructions);
+                            minmalInstruction.setText(card.getDetailedInstruction());
+                            card.minimal = false;
+
+                            //expand(view,card,baseHeight);
+                        } else {
+                            TextView minmalInstruction = view.findViewById(R.id.minimal_instructions);
+                            minmalInstruction.setText(card.getMinimalInstruction());
+                            card.minimal = true;
+                        }
+                        card.performAction();
                     }
                 });
             } else {
@@ -97,6 +110,36 @@ public class LessonAdapter extends ArrayAdapter {
 
         return v;
 
+    }
+
+    public static void expand(final View v, Instruction card, final int baseHeight) {
+        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = v.getHeight();
+
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        v.getLayoutParams().height = 1;
+        v.setVisibility(View.VISIBLE);
+        System.out.println(baseHeight);
+        System.out.println("t: " + targetHeight);
+        Animation a = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT
+                        : (int)(baseHeight + ((targetHeight - baseHeight) * interpolatedTime));
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration(1000);
+        v.startAnimation(a);
     }
 
 }

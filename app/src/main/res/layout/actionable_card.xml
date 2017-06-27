@@ -37,18 +37,6 @@
                     android:textSize="12dp"
                     />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:id="@+id/completion_status"
-                    android:gravity="right"
-                    android:text="Not Completed"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/cream"
-                    android:textSize="12dp"
-                    />
-
             </LinearLayout>
 
             <TextView

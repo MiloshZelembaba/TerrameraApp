@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,11 +19,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.view.animation.AlphaAnimation;
 import android.widget.ListView;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
     private LessonAdapter lessonAdapter;
-    private boolean mainPage = true;
-
-
+    private Map<String, Boolean> lessonCompletion = new HashMap<>();
 
 
     @Override
@@ -44,22 +45,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         /* Set Transitions */
-        Explode explode = new Explode();
-        getWindow().setExitTransition(explode);
+//        Explode explode = new Explode();
+//        getWindow().setExitTransition(explode);
 
-        Slide slide = new Slide(Gravity.RIGHT);
-        getWindow().setReturnTransition(slide);
+        Slide slide = new Slide(Gravity.LEFT);
+        getWindow().setExitTransition(slide);
+
+        updateLessonCompletion(getIntent());
 
         /* creating the adapter and adding the cards */
         ActionableCard detectBedBugs = new ActionableCard(ActionableCardStrings.DETECTION_HEADER,
-                ActionableCardStrings.DECETION_TITLE, this);
-        addDetectionInstructions(detectBedBugs);
+                ActionableCardStrings.DECETION_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
         ActionableCard treatBedBugs = new ActionableCard(ActionableCardStrings.TREATMENT_HEADER,
-                ActionableCardStrings.TREATMENT_TITLE, this);
-        addTreatmentInstructions(treatBedBugs);
+                ActionableCardStrings.TREATMENT_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
         ActionableCard preventBedBugs = new ActionableCard(ActionableCardStrings.PREVENTION_HEADER,
-                ActionableCardStrings.PREVENTION_TITLE, this);
-        addPreventionInstructions(preventBedBugs);
+                ActionableCardStrings.PREVENTION_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
         actionableCards.add(new Blurb());
         actionableCards.add(detectBedBugs);
         actionableCards.add(treatBedBugs);
@@ -82,6 +82,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void updateLessonCompletion(Intent intent){
+        if (getIntent().hasExtra(ActionableCardStrings.DETECTION_HEADER)){
+            lessonCompletion.put(ActionableCardStrings.DETECTION_HEADER, true);
+        } else if (getIntent().hasExtra(ActionableCardStrings.TREATMENT_HEADER)){
+            lessonCompletion.put(ActionableCardStrings.TREATMENT_HEADER, true);
+        } else if (getIntent().hasExtra(ActionableCardStrings.PREVENTION_HEADER)){
+            lessonCompletion.put(ActionableCardStrings.PREVENTION_HEADER, true);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -90,29 +100,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setUpLesson(ActionableCard card){
-        mainPage = false;
-        card.changeLayoutColour(this);
         showLesson(card);
     }
 
 
-
+    @TargetApi(Build.VERSION_CODES.M)
     public void showLesson(ActionableCard card){
-        Blurb blurb = new Blurb();
-        blurb.setTitle(card.getTitle());
-        ArrayList<Instruction> instructions = card.getInstructions();
-        ArrayList<ArrayItem> items = new ArrayList<>();
-        items.add(blurb);
-        for (Instruction i: instructions){
-            items.add(i);
+        Intent intent = new Intent(this, LessonActivity.class);
+        intent.putExtra("Title", card.getTitle());
+        intent.putExtra("Header", card.getHeader());
+        intent.putExtra("Colour", card.colour);
+
+        if (lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER)){
+            intent.putExtra(ActionableCardStrings.PREVENTION_HEADER, true);
         }
+        if (lessonCompletion.containsKey(ActionableCardStrings.TREATMENT_HEADER)){
+            intent.putExtra(ActionableCardStrings.TREATMENT_HEADER, true);
+        }
+        if (lessonCompletion.containsKey(ActionableCardStrings.DETECTION_HEADER)){
+            intent.putExtra(ActionableCardStrings.DETECTION_HEADER, true);
+        }
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
 
-        lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items);
-
-        card.getInstructionSet().setAdapter(lessonAdapter);
-
-        ListView listView = (ListView) findViewById(R.id.actionable_card_list);
-        listView.setAdapter(lessonAdapter);
     }
 
     @Override
@@ -128,77 +137,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void addDetectionInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet(card);
-        set.setAdapter(lessonAdapter);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
-        step1.setAction(step1.FLASHLIGHT);
-        Instruction step2 = new Instruction("Go under your bed", "", set);
-        Instruction step3 = new Instruction("Freak out", "", set);
-        Instruction step4 = new Instruction("Call for help", "", set);
-        Instruction step5 = new Instruction("Leave the house", "", set);
-        set.add(step1);
-        set.add(step2);
-        set.add(step3);
-        set.add(step4);
-        set.add(step5);
-
-        card.setInstructions(set);
-    }
-
-    private void addPreventionInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet(card);
-        set.setAdapter(lessonAdapter);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
-        step1.setAction(step1.FLASHLIGHT);
-        Instruction step2 = new Instruction("Go under your bed", "", set);
-        Instruction step3 = new Instruction("Freak out", "", set);
-        Instruction step4 = new Instruction("Call for help", "", set);
-        Instruction step5 = new Instruction("Leave the house", "", set);
-        set.add(step1);
-        set.add(step2);
-        set.add(step3);
-        set.add(step4);
-        set.add(step5);
-
-        card.setInstructions(set);
-    }
-
-    private void addTreatmentInstructions(ActionableCard card){
-        InstructionSet set = new InstructionSet(card);
-        set.setAdapter(lessonAdapter);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap here", set);
-        step1.setAction(step1.FLASHLIGHT);
-        Instruction step2 = new Instruction("Go under your bed", "", set);
-        Instruction step3 = new Instruction("Freak out", "", set);
-        Instruction step4 = new Instruction("Call for help", "", set);
-        Instruction step5 = new Instruction("Leave the house", "", set);
-        set.add(step1);
-        set.add(step2);
-        set.add(step3);
-        set.add(step4);
-        set.add(step5);
-
-
-        card.setInstructions(set);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!mainPage) {
-            findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(R.color.headerGray));
-            findViewById(R.id.content_main).setBackgroundColor(getResources().getColor(R.color.gravyGray));
-
-            actionableCardAdapter = new ActionableCardAdapter(this, R.layout.actionable_card, actionableCards);
-
-            ListView listView = (ListView) findViewById(R.id.actionable_card_list);
-            listView.setAdapter(actionableCardAdapter);
-            mainPage = true;
-        } else {
-            super.onBackPressed();
-        }
-
     }
 }

@@ -52,7 +52,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
         View v = convertView;
 
         int type = getItemViewType(position);
-        if (v == null){
+        if (true){
             if (type == ACTION_CARD){
                 ActionableCard card = (ActionableCard) actionableCards.get(position);
                 v = inflater.inflate(R.layout.actionable_card, parent, false);
@@ -62,10 +62,10 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 TextView cardTitle = v.findViewById(R.id.card_title);
                 cardTitle.setText(card.getTitle());
 
-                if (card.completed){
-                    TextView completionStatus = v.findViewById(R.id.completion_status);
-                    completionStatus.setText("Completed!");
-                }
+//                if (card.completed){
+//                    TextView completionStatus = v.findViewById(R.id.completion_status);
+//                    completionStatus.setText("Completed!");
+//                }
 
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
