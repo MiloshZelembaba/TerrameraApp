@@ -9,4 +9,7 @@
     <color name="cream">#ebefdc</color>
     <color name="turqoise">#76bcb4</color>
     <color name="haloBlue">#73b2d6</color>
+    <color name="greyText">#343434</color>
+    <color name="lightGrey">#777575</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -12,8 +12,8 @@ public abstract class ActionableCardStrings {
     public static final String TREATMENT_HEADER = "Treatment";
 
     /* TITLES */
-    public static final String DECETION_TITLE = "Blah Lbah lbah about detection";
-    public static final String PREVENTION_TITLE = "Blah Lbah lbah about prevention";
-    public static final String TREATMENT_TITLE = "Blah Lbah lbah about treatment";
+    public static final String DECETION_TITLE = "The first step is to make sure that you do indeed have bed bugs";
+    public static final String PREVENTION_TITLE = "A guide to making sure they don't come back";
+    public static final String TREATMENT_TITLE = "How to use Proof's proven formula to rid the bed bugs";
 
 }

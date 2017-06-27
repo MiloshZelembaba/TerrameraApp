@@ -1,6 +1,5 @@
 package com.example.miloshzelembaba.terramera;
 
-import android.app.Notification;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
+    private boolean mainPage = true;
 
 
     @Override
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setUpLesson(String type, ActionableCard card){
+        mainPage = false;
         card.changeLayoutColour(this);
         showLesson(card);
     }
@@ -111,9 +111,13 @@ public class MainActivity extends AppCompatActivity {
         Instruction step1 = new Instruction("Turn on your flashlight", "");
         Instruction step2 = new Instruction("Go under your bed", "");
         Instruction step3 = new Instruction("Freak out", "");
+        Instruction step4 = new Instruction("Call for help", "");
+        Instruction step5 = new Instruction("Leave the house", "");
         set.add(step1);
         set.add(step2);
         set.add(step3);
+        set.add(step4);
+        set.add(step5);
 
         card.setInstructions(set);
     }
@@ -123,9 +127,13 @@ public class MainActivity extends AppCompatActivity {
         Instruction step1 = new Instruction("Turn on your flashlight", "");
         Instruction step2 = new Instruction("Go under your bed", "");
         Instruction step3 = new Instruction("Freak out", "");
+        Instruction step4 = new Instruction("Call for help", "");
+        Instruction step5 = new Instruction("Leave the house", "");
         set.add(step1);
         set.add(step2);
         set.add(step3);
+        set.add(step4);
+        set.add(step5);
 
         card.setInstructions(set);
     }
@@ -135,10 +143,32 @@ public class MainActivity extends AppCompatActivity {
         Instruction step1 = new Instruction("Turn on your flashlight", "");
         Instruction step2 = new Instruction("Go under your bed", "");
         Instruction step3 = new Instruction("Freak out", "");
+        Instruction step4 = new Instruction("Call for help", "");
+        Instruction step5 = new Instruction("Leave the house", "");
         set.add(step1);
         set.add(step2);
         set.add(step3);
+        set.add(step4);
+        set.add(step5);
+
 
         card.setInstructions(set);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mainPage) {
+            findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(R.color.headerGray));
+            findViewById(R.id.content_main).setBackgroundColor(getResources().getColor(R.color.gravyGray));
+
+            actionableCardAdapter = new ActionableCardAdapter(this, R.layout.actionable_card, actionableCards);
+
+            ListView listView = (ListView) findViewById(R.id.actionable_card_list);
+            listView.setAdapter(actionableCardAdapter);
+            mainPage = true;
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }

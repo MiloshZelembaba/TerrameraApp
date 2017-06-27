@@ -86,13 +86,13 @@ public class ActionableCardAdapter extends ArrayAdapter {
 
     private void setColour(View v, String title, ActionableCard card){
         if (title.equals(ActionableCardStrings.PREVENTION_HEADER)){
-            v.setBackgroundColor(activity.getResources().getColor(R.color.haloBlue));
+            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.haloBlue));
             card.setColour(R.color.haloBlue);
         } else if (title.equals(ActionableCardStrings.TREATMENT_HEADER)){
-            v.setBackgroundColor(activity.getResources().getColor(R.color.turqoise));
+            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.turqoise));
             card.setColour(R.color.turqoise);
         } else if (title.equals(ActionableCardStrings.DETECTION_HEADER)){
-            v.setBackgroundColor(activity.getResources().getColor(R.color.greenCard));
+            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.greenCard));
             card.setColour(R.color.greenCard);
         }
 
