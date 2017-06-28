@@ -60,6 +60,13 @@
                 android:textColor="@color/greyText"
                 android:id="@+id/minimal_instructions"/>
 
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/visual_representation"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

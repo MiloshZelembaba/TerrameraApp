@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="295dp"
         app:cardElevation="7dp"
-        android:layout_margin="10dp">
+        android:layout_margin="15dp">
 
 
         <LinearLayout
@@ -33,7 +33,7 @@
                     android:gravity="left"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="15dp"
-                    android:textColor="@color/cream"
+                    android:textColor="@color/white"
                     android:textSize="12dp"
                     />
 
@@ -43,10 +43,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
                 android:id="@+id/card_title"
-                android:gravity="left"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/cream"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
                 android:textSize="30dp"
                 />
 
@@ -58,7 +57,7 @@
                 android:text="Begin"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/cream"
+                android:textColor="@color/white"
                 android:textSize="30dp"
                 />
 

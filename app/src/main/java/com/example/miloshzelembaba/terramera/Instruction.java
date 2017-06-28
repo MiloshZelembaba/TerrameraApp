@@ -24,6 +24,7 @@ public class Instruction extends ArrayItem {
     private Context context;
     private boolean toggle = false;
     public boolean minimal = true;
+    public int image = -1;
 
     /* ACTION STRINGS */
     public static final String FLASHLIGHT = "FLASHLIGHT";

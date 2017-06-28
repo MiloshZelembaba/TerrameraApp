@@ -6,6 +6,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,12 +15,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -48,8 +56,17 @@ public class MainActivity extends AppCompatActivity {
 //        Explode explode = new Explode();
 //        getWindow().setExitTransition(explode);
 
-        Slide slide = new Slide(Gravity.LEFT);
-        getWindow().setExitTransition(slide);
+        Window window = getWindow();
+        Fade slide = new Fade();
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setAllowEnterTransitionOverlap(true);
+        window.setAllowReturnTransitionOverlap(true);
+        slide.setInterpolator(new AccelerateDecelerateInterpolator());
+        //slide.setSlideEdge(Gravity.LEFT);
+        slide.excludeTarget(android.R.id.statusBarBackground, true);
+        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+        window.setExitTransition(slide); // The Transition to use to move Views out of the scene when calling a new Activity.
+        window.setReenterTransition(slide);
 
         updateLessonCompletion(getIntent());
 
@@ -60,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 ActionableCardStrings.TREATMENT_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
         ActionableCard preventBedBugs = new ActionableCard(ActionableCardStrings.PREVENTION_HEADER,
                 ActionableCardStrings.PREVENTION_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
-        actionableCards.add(new Blurb());
+        //actionableCards.add(new Blurb());
         actionableCards.add(detectBedBugs);
         actionableCards.add(treatBedBugs);
         actionableCards.add(preventBedBugs);
@@ -72,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //TODO: MAKE THIS SUPPORT BUTTON
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setBackgroundDrawable(getDrawable(R.drawable.chat_icon));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
