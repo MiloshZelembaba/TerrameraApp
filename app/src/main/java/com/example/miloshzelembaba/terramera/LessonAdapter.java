@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -55,22 +59,24 @@ public class LessonAdapter extends ArrayAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+        ViewHolder holder;
 
         int type = getItemViewType(position);
-        if (true){ // TODO: should properly utilize viewHolder
+        if (convertView == null){ // TODO: should properly utilize viewHolder
             if (type == LESSON_CARD){
+                holder = new ViewHolder();
                 final Instruction card = (Instruction) lesson.get(position);
-                v = inflater.inflate(R.layout.minimal_lesson, parent, false);
+                convertView = inflater.inflate(R.layout.minimal_lesson, parent, false);
 
-                TextView stepNum = v.findViewById(R.id.step_num);
+                TextView stepNum = convertView.findViewById(R.id.step_num);
                 stepNum.setText(card.getStepNum());
-                TextView minmalInstruction = v.findViewById(R.id.minimal_instructions);
+                TextView minmalInstruction = convertView.findViewById(R.id.minimal_instructions);
                 minmalInstruction.setText(card.getMinimalInstruction());
-
-
+                TextView detailedInstruction = convertView.findViewById(R.id.detailed_instructions);
+                detailedInstruction.setText(card.getDetailedInstruction());
+                ImageView img = null;
                 if (card.image != -1) {
-                    ImageView img = v.findViewById(R.id.visual_representation);
+                    img = convertView.findViewById(R.id.visual_representation);
                     //img.setImageResource(R.drawable.bedroom_bb_post_treatment_diagram_balloons);
 
                     img.setImageBitmap(
@@ -79,17 +85,19 @@ public class LessonAdapter extends ArrayAdapter {
 
 
                 if (!card.note.equals("")){
-                    TextView tmp = (TextView) v.findViewById(R.id.note);
+                    TextView tmp = (TextView) convertView.findViewById(R.id.note);
                     tmp.setText(card.note);
                 }
 
-                v.setOnClickListener(new View.OnClickListener() {
+                convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         card.setContext(activity);
                         if (card.minimal && !card.getDetailedInstruction().isEmpty()) {
                             TextView minmalInstruction = view.findViewById(R.id.minimal_instructions);
-                            minmalInstruction.setText(card.getDetailedInstruction());
+                            minmalInstruction.setVisibility(View.GONE);
+                            TextView detailedInstruction = view.findViewById(R.id.detailed_instructions);
+                            detailedInstruction.setVisibility(View.VISIBLE);
 
                             TextView minimize = view.findViewById(R.id.note);
                             if (minimize.getText() == "Tap to expand") {
@@ -100,10 +108,12 @@ public class LessonAdapter extends ArrayAdapter {
                                 card.minimal = false;
                             }
 
-                            //expand(view,card,baseHeight);
+                            expand(view,card,view.getHeight());
                         } else {
                             TextView minmalInstruction = view.findViewById(R.id.minimal_instructions);
-                            minmalInstruction.setText(card.getMinimalInstruction());
+                            minmalInstruction.setVisibility(View.VISIBLE);
+                            TextView detailedInstruction = view.findViewById(R.id.detailed_instructions);
+                            detailedInstruction.setVisibility(View.GONE);
 
                             TextView minimize = view.findViewById(R.id.note);
                             if (minimize.getText() == "Tap to minimize") {
@@ -117,15 +127,32 @@ public class LessonAdapter extends ArrayAdapter {
                         card.performAction();
                     }
                 });
+                holder.detailedInstructions = detailedInstruction;
+                holder.minimalInstructions = minmalInstruction;
+                holder.visualInstructions = img;
+                holder.note = stepNum;
+                convertView.setTag(holder);
             } else {
                 Blurb blurb = (Blurb) lesson.get(position);
-                v = inflater.inflate(R.layout.lesson_header, parent, false);
-                TextView header = v.findViewById(R.id.lesson_title);
+                convertView = inflater.inflate(R.layout.lesson_header, parent, false);
+                TextView header = convertView.findViewById(R.id.lesson_title);
                 header.setText(blurb.title);
+            }
+        } else {
+            if (type == LESSON_CARD) {
+                final Instruction card = (Instruction) lesson.get(position);
+                holder = (ViewHolder) convertView.getTag();
+                holder.detailedInstructions.setText(card.getDetailedInstruction());
+                holder.minimalInstructions.setText(card.getMinimalInstruction());
+
+                TextView stepNum = convertView.findViewById(R.id.step_num);
+                stepNum.setText("Step " + (position) + " of " + (lesson.size() - 1));
+                holder.stepNum = stepNum;
+
             }
         }
 
-        return v;
+        return convertView;
 
     }
 
@@ -170,13 +197,12 @@ public class LessonAdapter extends ArrayAdapter {
 
     public static void expand(final View v, Instruction card, final int baseHeight) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final int targetHeight = v.getHeight();
+        final int targetHeight = v.getHeight() + 300;
 
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        System.out.println(baseHeight);
-        System.out.println("t: " + targetHeight);
+        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
         Animation a = new Animation()
         {
             @Override
@@ -184,6 +210,7 @@ public class LessonAdapter extends ArrayAdapter {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? ViewGroup.LayoutParams.WRAP_CONTENT
                         : (int)(baseHeight + ((targetHeight - baseHeight) * interpolatedTime));
+
                 v.requestLayout();
             }
 
@@ -193,9 +220,18 @@ public class LessonAdapter extends ArrayAdapter {
             }
         };
 
-        // 1dp/ms
-        a.setDuration(1000);
+        a.setDuration(750);
+        aa.setDuration(750);
+        v.findViewById(R.id.detailed_instructions).startAnimation(aa);
         v.startAnimation(a);
+    }
+
+    static class ViewHolder {
+        private TextView minimalInstructions;
+        private TextView detailedInstructions;
+        private ImageView visualInstructions;
+        private TextView stepNum;
+        private TextView note;
     }
 
 }
