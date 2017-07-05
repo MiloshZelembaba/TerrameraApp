@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:minHeight="75dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         app:cardElevation="6dp">
 
@@ -19,29 +19,30 @@
             android:layout_width="match_parent"
             android:minHeight="75dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/top_holder">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:layout_weight="1">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:textSize="10dp"
-                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="start"
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:textColor="@color/lightGrey"
-                    android:id="@+id/step_num"/>
+                    android:id="@+id/step_num" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:textSize="10dp"
-                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="end"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:textColor="@color/lightGrey"
@@ -53,18 +54,18 @@
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/greyText"
                 android:id="@+id/minimal_instructions"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:visibility="gone"
                 android:textColor="@color/greyText"
                 android:id="@+id/detailed_instructions"/>

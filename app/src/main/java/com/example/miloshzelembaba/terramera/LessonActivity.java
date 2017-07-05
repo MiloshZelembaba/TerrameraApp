@@ -3,6 +3,9 @@ package com.example.miloshzelembaba.terramera;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +26,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.miloshzelembaba.terramera.LessonAdapter.decodeSampledBitmapFromResource;
 
 public class LessonActivity extends AppCompatActivity {
 
@@ -118,6 +123,7 @@ public class LessonActivity extends AppCompatActivity {
         set.setAdapter(lessonAdapter);
         Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap to turn on", set);
         step1.setAction(step1.FLASHLIGHT);
+        step1.setContext(this);
         Instruction step2 = new Instruction("Go under your bed", "", set);
         Instruction step3 = new Instruction("Some sort of credit card thing", "", set);
         Instruction step4 = new Instruction("Something else", "", set);
@@ -175,10 +181,10 @@ public class LessonActivity extends AppCompatActivity {
         Instruction step2 = new Instruction("Remove personal items", "Remove all personal items from bedroom closet(s), drawers, nightstands and other furniture, and seal all " +
                 "launderable items into garbage bags or [Proof laundry bags]. Seal all non-launderable items (electronics, books, " +
                 "etc.) into [Proof Stuff Saver bags].", EXPAND, set);
-        step2.image = R.drawable.bedroom_pre_treatment_diagrams_letters;
+        step2.image = decodeSampledBitmapFromResource(getResources(), R.drawable.bedroom_pre_treatment_diagrams_letters, 175, 175);
         Instruction step3 = new Instruction("Place everything effected into Proof Laundry Bags", "Strip the bed(s) and seal all linens, pillowcases, mattress pads, blankets and drapes into [Proof laundry bags] or " +
                 "garbage bags.", EXPAND, set);
-        step3.image = R.drawable.bedroom_bb_post_treatment_diagram_balloons;
+        step3.image = decodeSampledBitmapFromResource(getResources(), R.drawable.bedroom_bb_post_treatment_diagram_balloons, 175, 175);
         Instruction step4 = new Instruction("Vacuum up all visible bugs", "Use a [Proof insect vacuum filter] fitted to your household vacuum hose to suck up all visible bed bugs and debris " +
                 "from floors, cracks and crevices, including under furniture, under bed legs, and around the room’s perimeter " +
                 "wherever the wall meets the floor. Once the insect vacuum filter is full of debris/insects, replace with a new insect " +
@@ -199,7 +205,7 @@ public class LessonActivity extends AppCompatActivity {
                 "items. Warning: vapor inside the [Proof Mattress Saver bag] is flammable, do not expose bag or vapor to flames, " +
                 "spark or heat sources.",
                 EXPAND, set);
-        step8.image = R.drawable.vapor_pad_garbage_bag_instructions;
+        step8.image = decodeSampledBitmapFromResource(getResources(), R.drawable.vapor_pad_garbage_bag_instructions, 175, 175);
         Instruction step9 = new Instruction("Seal all bed parts", "Seal all mattresses, box-springs and bed-frames into a [Proof Mattress Saver bag] along with 4 opened [Proof " +
                 "Mattress Saver pads] and leave sealed for 48 hours to kill all bed bugs and eggs present in those items. Warning: " +
                 "vapor inside the [Proof Mattress Saver bag] is flammable, do not expose the bag or vapor to open flames, sparks or " +

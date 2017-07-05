@@ -2,10 +2,13 @@ package com.example.miloshzelembaba.terramera;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.media.Image;
 import android.os.Build;
 import android.os.health.PackageHealthStats;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -20,12 +23,17 @@ public class Instruction extends ArrayItem {
     String note = "";
     boolean completed = false;
     InstructionSet instructionSet;
-    private String action = "";
+    public String action = "";
     private Context context;
     private boolean toggle = false;
     public boolean minimal = true;
-    public int image = -1;
+    public Bitmap image = null;
+//    public int image = 0;
     public int detailedHeight = 0;
+    public int minimalHeight = 0;
+    public boolean inTransition = false;
+    public int maximalHeight = 0;
+    public ImageView img;
 
     /* ACTION STRINGS */
     public static final String FLASHLIGHT = "FLASHLIGHT";
@@ -96,10 +104,26 @@ public class Instruction extends ArrayItem {
             }
 
         } catch (Exception e2) {
-            Toast.makeText(context, "Torch Failed: " + e2.getMessage(), Toast.LENGTH_SHORT).show();
+            if (e2 instanceof NullPointerException){
+                System.out.println("SUP YO");
+            }
+            //Toast.makeText(context, "Torch Failed: " + e2.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClick(){
+        minimal = !minimal;
+        inTransition = true;
+
+        if (action.isEmpty()) {
+            if (minimal) {
+                note = "Tap to expand";
+            } else {
+                note = "Tap to minimize";
+            }
         }
 
-
+        performAction();
     }
 
 
