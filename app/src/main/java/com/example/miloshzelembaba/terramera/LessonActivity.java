@@ -42,13 +42,13 @@ public class LessonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        header = (String) intent.getStringExtra("Header");
+        header = intent.getStringExtra("Header");
         setTitle(header);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        String title = (String) intent.getStringExtra("Title");
-        int colour = (int) intent.getIntExtra("Colour",0);
+        String title = intent.getStringExtra("Title");
+        int colour = intent.getIntExtra("Colour",0);
 
         updateLessonCompletion(getIntent());
 

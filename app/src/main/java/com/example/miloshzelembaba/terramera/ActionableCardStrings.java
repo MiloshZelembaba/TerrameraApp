@@ -12,7 +12,7 @@ public abstract class ActionableCardStrings {
     public static final String TREATMENT_HEADER = "Treatment";
 
     /* TITLES */
-    public static final String DECETION_TITLE = "Do I have bed bugs?";
+    public static final String DECETION_TITLE = "Do I have a bed bug problem?";
     public static final String PREVENTION_TITLE = "I dont want bed bugs to come back";
     public static final String TREATMENT_TITLE = "How to get rid of bed bugs";
 

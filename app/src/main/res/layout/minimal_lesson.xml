@@ -24,27 +24,26 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:gravity="start"
+                    android:gravity="left"
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:textColor="@color/lightGrey"
                     android:id="@+id/step_num" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:gravity="end"
+                    android:gravity="right"
                     android:layout_margin="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2.5"
                     android:textColor="@color/lightGrey"
                     android:id="@+id/note"/>
 

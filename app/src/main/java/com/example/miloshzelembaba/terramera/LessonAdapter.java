@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class LessonAdapter extends ArrayAdapter {
 
                             card.onClick();
                             holder.note.setText(card.note); // update the note text
+                            //holder.note.setGravity(Gravity.END);
                             updateDebug(currentPosition);
                             if (card.image != null) {
                                 holder.visualInstructions.invalidate();
@@ -168,10 +170,9 @@ public class LessonAdapter extends ArrayAdapter {
             holder.detailedInstructions.setText(card.getDetailedInstruction());
             holder.minimalInstructions.setText(card.getMinimalInstruction());
             holder.note.setText(card.note);
+            //holder.note.setGravity(Gravity.END);
             holder.stepNum.setText(card.getStepNum());
             holder.position = position;
-
-
 
 //            if (card.image != null) {
 //                if (position == 2 || position == 3 || position == 8 ) {
@@ -240,8 +241,6 @@ public class LessonAdapter extends ArrayAdapter {
 
     public static void expand(final View v, final Instruction card, final int height, final int baseHeight) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        final int baseHeight = v.getHeight();
-
 
         card.minimalHeight = baseHeight;
 

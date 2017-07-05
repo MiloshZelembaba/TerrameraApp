@@ -104,10 +104,7 @@ public class Instruction extends ArrayItem {
             }
 
         } catch (Exception e2) {
-            if (e2 instanceof NullPointerException){
-                System.out.println("SUP YO");
-            }
-            //Toast.makeText(context, "Torch Failed: " + e2.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Torch Failed: " + e2.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
