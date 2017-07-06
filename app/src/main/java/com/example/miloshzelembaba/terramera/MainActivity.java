@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         Window window = getWindow();
         Fade slide = new Fade();
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         window.setAllowEnterTransitionOverlap(true);
         window.setAllowReturnTransitionOverlap(true);
 
