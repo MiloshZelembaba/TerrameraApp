@@ -1,24 +1,41 @@
 package com.example.miloshzelembaba.terramera;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
 import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -31,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
-    private Map<String, Boolean> lessonCompletion = new HashMap<>();
 
 
     @Override
@@ -49,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         Window window = getWindow();
         Fade slide = new Fade();
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         window.setAllowEnterTransitionOverlap(true);
         window.setAllowReturnTransitionOverlap(true);
+
         slide.setInterpolator(new AccelerateDecelerateInterpolator());
         //slide.setSlideEdge(Gravity.LEFT);
         slide.excludeTarget(android.R.id.statusBarBackground, true);
@@ -59,15 +75,13 @@ public class MainActivity extends AppCompatActivity {
         window.setExitTransition(slide); // The Transition to use to move Views out of the scene when calling a new Activity.
         window.setReenterTransition(slide);
 
-        updateLessonCompletion(getIntent());
-
         /* creating the adapter and adding the cards */
         ActionableCard detectBedBugs = new ActionableCard(ActionableCardStrings.DETECTION_HEADER,
-                ActionableCardStrings.DECETION_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
+                ActionableCardStrings.DECETION_TITLE, this);
         ActionableCard treatBedBugs = new ActionableCard(ActionableCardStrings.TREATMENT_HEADER,
-                ActionableCardStrings.TREATMENT_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
+                ActionableCardStrings.TREATMENT_TITLE, this);
         ActionableCard preventBedBugs = new ActionableCard(ActionableCardStrings.PREVENTION_HEADER,
-                ActionableCardStrings.PREVENTION_TITLE, this, lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER));
+                ActionableCardStrings.PREVENTION_TITLE, this);
         //actionableCards.add(new Blurb());
         actionableCards.add(detectBedBugs);
         actionableCards.add(treatBedBugs);
@@ -100,18 +114,7 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2A2A2A")))
     }
 
-
-    public void updateLessonCompletion(Intent intent){
-        if (getIntent().hasExtra(ActionableCardStrings.DETECTION_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.DETECTION_HEADER, true);
-        } else if (getIntent().hasExtra(ActionableCardStrings.TREATMENT_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.TREATMENT_HEADER, true);
-        } else if (getIntent().hasExtra(ActionableCardStrings.PREVENTION_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.PREVENTION_HEADER, true);
-        }
-    }
-
-    public void setUpLesson(ActionableCard card){
+    public void setUpLesson(final ActionableCard card){
         showLesson(card);
     }
 
@@ -122,16 +125,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("Header", card.getHeader());
         intent.putExtra("Colour", card.colour);
 
-        if (lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER)){
-            intent.putExtra(ActionableCardStrings.PREVENTION_HEADER, true);
-        }
-        if (lessonCompletion.containsKey(ActionableCardStrings.TREATMENT_HEADER)){
-            intent.putExtra(ActionableCardStrings.TREATMENT_HEADER, true);
-        }
-        if (lessonCompletion.containsKey(ActionableCardStrings.DETECTION_HEADER)){
-            intent.putExtra(ActionableCardStrings.DETECTION_HEADER, true);
-        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
+        overridePendingTransition(0, 0);
 
     }
 
@@ -160,5 +159,23 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.M)
+//    private void lessonTransition(){
+//        ViewGroup transitionsContainer = (ViewGroup) findViewById(R.id. card_layout);
+//        TransitionManager.beginDelayedTransition(transitionsContainer, new TransitionSet()
+//                .addTransition(new ChangeBounds())
+//                .addTransition(new ChangeImageTransform()));
+//
+//        CardView card = (CardView) findViewById(R.id.cardView);
+//        boolean expanded = true;
+//        ViewGroup.LayoutParams params = card.getLayoutParams();
+//        params.height = expanded ? ViewGroup.LayoutParams.MATCH_PARENT :
+//                ViewGroup.LayoutParams.WRAP_CONTENT;
+//        card.setLayoutParams(params);
+//
+//        imageView.setScaleType(expanded ? CardView.ScaleType.CENTER_CROP :
+//                //ImageView.ScaleType.FIT_CENTER);
+//    }
 
 }

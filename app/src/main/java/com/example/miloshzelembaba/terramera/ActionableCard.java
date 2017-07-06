@@ -23,11 +23,10 @@ public class ActionableCard extends ArrayItem{
     public Bitmap begin_button;
 
 
-    public ActionableCard(String h, String t, Activity c, boolean b){
+    public ActionableCard(String h, String t, Activity c){
         header = h;
         title = t;
         context = c;
-        completed = b;
         begin_button = decodeSampledBitmapFromResource(context.getResources(), R.drawable.begin_btn, 105, 35);
     }
 

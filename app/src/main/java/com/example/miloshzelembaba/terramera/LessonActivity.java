@@ -1,6 +1,7 @@
 package com.example.miloshzelembaba.terramera;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -36,70 +37,72 @@ public class LessonActivity extends AppCompatActivity {
     private LessonAdapter lessonAdapter;
     private InstructionSet set;
     private String header;
-    private Map<String, Boolean> lessonCompletion = new HashMap<>();
     private final String EXPAND = "Tap to expand";
+    Thread r;
 
     @Override
     @TargetApi(Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        header = intent.getStringExtra("Header");
-        setTitle(header);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        String title = intent.getStringExtra("Title");
-        int colour = intent.getIntExtra("Colour",0);
+        final Activity act = this;
 
-        updateLessonCompletion(getIntent());
+        r = new Thread() {
+            @Override
+            public void run() {
+                Intent intent = getIntent();
+                header = intent.getStringExtra("Header");
+                setTitle(header);
+                setContentView(R.layout.activity_main);
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+                final String title = intent.getStringExtra("Title");
+                int colour = intent.getIntExtra("Colour",0);
 
-        Window window = getWindow();
-        Fade slide = new Fade();
-        window.setAllowEnterTransitionOverlap(true);
-        window.setAllowReturnTransitionOverlap(true);
-        slide.setInterpolator(new LinearInterpolator());
-        //slide.setSlideEdge(Gravity.RIGHT);
-        slide.excludeTarget(android.R.id.statusBarBackground, true);
-        slide.excludeTarget(android.R.id.navigationBarBackground, true);
-        window.setEnterTransition(slide); // The Transition to use to move Views into the initial Scene.
-        window.setReturnTransition(slide);
-        getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gravyGray)));
 
-        //////////
-        findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(colour));
-        findViewById(R.id.content_main).setBackgroundColor(getResources().getColor(colour));
+                Window window = getWindow();
+                Fade slide = new Fade();
+                window.setAllowEnterTransitionOverlap(true);
+                window.setAllowReturnTransitionOverlap(true);
+                slide.setInterpolator(new LinearInterpolator());
+                //slide.setSlideEdge(Gravity.RIGHT);
+                slide.excludeTarget(android.R.id.statusBarBackground, true);
+                slide.excludeTarget(android.R.id.navigationBarBackground, true);
+                window.setEnterTransition(slide); // The Transition to use to move Views into the initial Scene.
+                window.setReturnTransition(slide);
+                getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gravyGray)));
 
-        Blurb blurb = new Blurb();
-        blurb.setTitle(title);
-        set = getInstructions(header);
-        ArrayList<Instruction> instructions = set.getInstructions();
-        ArrayList<ArrayItem> items = new ArrayList<>();
-        items.add(blurb);
-        for (Instruction i: instructions){
-            items.add(i);
-        }
+                //////////
+                //findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(colour));
+                findViewById(R.id.content_main).setBackgroundColor(getResources().getColor(colour));
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                fab.setVisibility(View.GONE);
 
-        lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items, header);
 
-        set.setAdapter(lessonAdapter);
+                Blurb blurb = new Blurb();
+                blurb.setTitle(title);
+                set = getInstructions(header);
+                ArrayList<Instruction> instructions = set.getInstructions();
+                ArrayList<ArrayItem> items = new ArrayList<>();
+                items.add(blurb);
+                for (Instruction i: instructions){
+                    items.add(i);
+                }
 
-        ListView listView = (ListView) findViewById(R.id.actionable_card_list);
-        listView.setAdapter(lessonAdapter);
-        ////////
+                lessonAdapter = new LessonAdapter(act, R.layout.minimal_lesson, items, header);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+                set.setAdapter(lessonAdapter);
+
+                ListView listView = (ListView) findViewById(R.id.actionable_card_list);
+                listView.setAdapter(lessonAdapter);
+            }
+        };
+
     }
 
-    public void updateLessonCompletion(Intent intent){
-        if (getIntent().hasExtra(ActionableCardStrings.DETECTION_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.DETECTION_HEADER, true);
-        } else if (getIntent().hasExtra(ActionableCardStrings.TREATMENT_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.TREATMENT_HEADER, true);
-        } else if (getIntent().hasExtra(ActionableCardStrings.PREVENTION_HEADER)){
-            lessonCompletion.put(ActionableCardStrings.PREVENTION_HEADER, true);
-        }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        r.run();
     }
 
     private InstructionSet getInstructions(String header){
@@ -253,20 +256,6 @@ public class LessonActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.M)
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        if (set.completed && !lessonCompletion.containsKey(header)) {
-            lessonCompletion.put(header, set.completed);
-        }
-
-        if (lessonCompletion.containsKey(ActionableCardStrings.PREVENTION_HEADER)){
-            intent.putExtra(ActionableCardStrings.PREVENTION_HEADER, true);
-        }
-        if (lessonCompletion.containsKey(ActionableCardStrings.TREATMENT_HEADER)){
-            intent.putExtra(ActionableCardStrings.TREATMENT_HEADER, true);
-        }
-        if (lessonCompletion.containsKey(ActionableCardStrings.DETECTION_HEADER)){
-            intent.putExtra(ActionableCardStrings.DETECTION_HEADER, true);
-        }
-
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 

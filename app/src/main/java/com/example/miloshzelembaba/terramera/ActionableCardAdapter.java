@@ -2,11 +2,16 @@ package com.example.miloshzelembaba.terramera;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.media.Image;
 import android.support.v7.widget.CardView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,7 +79,8 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
+//                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
+                        expand(view.findViewById(R.id.cardView), view.findViewById(R.id.card_layout),activity,((ActionableCard)actionableCards.get(position)));
                     }
                 });
                 v.findViewById(R.id.begin_button).setOnClickListener(new View.OnClickListener() {
@@ -109,7 +115,70 @@ public class ActionableCardAdapter extends ArrayAdapter {
             ((CardView)v.findViewById(R.id.cardView)).setCardBackgroundColor(activity.getResources().getColor(R.color.greenCard));
             card.setColour(R.color.greenCard);
         }
-
-
     }
+
+
+    public static void expand(final View v, final View frame, final Context context, final ActionableCard card) {
+        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int baseHeight = v.getHeight();
+        final int height = getSize(context).y - baseHeight;
+        final int baseWidth = v.getWidth();
+        final int width = getSize(context).x - baseWidth;
+        final float ogX = v.getX();
+        final float ogY = v.getY();
+
+        final float ogXF = frame.getX();
+        final float ogYF = frame.getY();
+
+        final View header = v.findViewById(R.id.card_header);
+        final View title = v.findViewById(R.id.card_title);
+        final View beginBtn = v.findViewById(R.id.begin_button);
+
+
+
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        v.getLayoutParams().height = 1;
+        v.setVisibility(View.VISIBLE);
+        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+
+
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = (int)(baseHeight + (height * interpolatedTime));
+                v.getLayoutParams().width = (int)(baseWidth + (width * interpolatedTime));
+                v.setX(ogX * (1 - interpolatedTime));
+                v.setY(ogY * (1 - interpolatedTime));
+                frame.setX(ogXF * (1 - interpolatedTime));
+                frame.setY(ogYF * (1 - interpolatedTime));
+                header.setAlpha(1 - interpolatedTime);
+                title.setAlpha(1 - interpolatedTime);
+                beginBtn.setAlpha(1 - interpolatedTime);
+
+                if (interpolatedTime == 1){
+                    ((MainActivity)context).setUpLesson(card);
+                }
+
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+
+    public static Point getSize(Context context){
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+
 }
