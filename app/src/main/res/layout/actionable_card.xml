@@ -2,38 +2,36 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/transparent">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:orientation="vertical"
         android:id="@+id/cardView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="295dp"
-        app:cardElevation="7dp"
-        android:layout_margin="15dp">
-
+        android:layout_margin="15dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="7dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/card_header"
-                    android:gravity="left"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/white"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/card_header"
+                        android:gravity="left"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/white"
                     android:textSize="12dp"
                     />
 
@@ -49,17 +47,21 @@
                 android:textSize="30dp"
                 />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/begin_button"
-                android:gravity="center"
-                android:text="Begin"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:textSize="30dp"
-                />
+                android:gravity="center">
+
+                <Button
+                    android:layout_width="115dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/begin_button"
+                    android:elevation="10dp"
+                    android:text="Begin   >"
+                    android:gravity="center"
+                    android:background="@drawable/roundcorner"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

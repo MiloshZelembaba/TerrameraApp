@@ -23,6 +23,8 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by miloshzelembaba on 6/26/17.
@@ -55,7 +57,7 @@ public class LessonAdapter extends ArrayAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (lesson.get(position) instanceof Instruction){
+        if (lesson.get(position) instanceof Instruction) {
             return LESSON_CARD;
         }
 
@@ -95,7 +97,6 @@ public class LessonAdapter extends ArrayAdapter {
                         if (card.action.isEmpty() && (card.note.equals("Tap to expand") || card.note.equals("Tap to minimize"))) {
 
                             card.onClick();
-                            holder.note.setText(card.note); // update the note text
                             //holder.note.setGravity(Gravity.END);
                             updateDebug(currentPosition);
                             if (card.image != null) {
@@ -124,7 +125,7 @@ public class LessonAdapter extends ArrayAdapter {
                             final int targetHeight = text.getMeasuredHeight();
 
                             int imageHeight = 0;
-                            if (currentPosition == 2 || currentPosition == 3 || currentPosition == 8) {
+                            if (hasPicture(currentPosition)) {
                                 ImageView image = view.findViewById(R.id.visual_representation);
                                 image.measure(View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
                                         View.MeasureSpec.makeMeasureSpec(3000, View.MeasureSpec.AT_MOST));
@@ -135,10 +136,12 @@ public class LessonAdapter extends ArrayAdapter {
 
                             if (!card.minimal) {
                                 card.maximalHeight = targetHeight + imageHeight;
-                                expand(view, card, targetHeight + imageHeight, tmpHeight);
+                                expand(view, card, targetHeight + imageHeight, tmpHeight, currentPosition);
                             } else {
                                 shrink(view, card, card.minimalHeight);
                             }
+
+                            holder.note.setText(card.note); // update the note text
                         } else {
                             card.performAction();
                         }
@@ -186,7 +189,7 @@ public class LessonAdapter extends ArrayAdapter {
 
             convertView.getLayoutParams().height = RecyclerView.LayoutParams.WRAP_CONTENT;
 
-            holder.updateVisibilities(card);
+            holder.updateVisibilities(card, position);
             debug = -1;
         }
 
@@ -200,6 +203,7 @@ public class LessonAdapter extends ArrayAdapter {
     public static void shrink(final View v, final Instruction card, final int height) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final int baseHeight = v.getHeight();
+//        v.findViewById(R.id.note).setVisibility(View.INVISIBLE);
 
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         //v.getLayoutParams().height = 1;
@@ -218,6 +222,8 @@ public class LessonAdapter extends ArrayAdapter {
                     v.findViewById(R.id.minimal_instructions).setVisibility(View.VISIBLE);
                     v.findViewById(R.id.detailed_instructions).setVisibility(View.GONE);
                     v.findViewById(R.id.visual_representation).setVisibility(View.GONE);
+//                    v.findViewById(R.id.note).setVisibility(View.VISIBLE);
+                    ((TextView)v.findViewById(R.id.note)).setText(card.note); // update the note text
                     card.inTransition = false;
                 }
 
@@ -239,8 +245,9 @@ public class LessonAdapter extends ArrayAdapter {
         v.startAnimation(a);
     }
 
-    public static void expand(final View v, final Instruction card, final int height, final int baseHeight) {
+    public static void expand(final View v, final Instruction card, final int height, final int baseHeight, final int pos) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        v.findViewById(R.id.note).setVisibility(View.INVISIBLE);
 
         card.minimalHeight = baseHeight;
 
@@ -266,7 +273,13 @@ public class LessonAdapter extends ArrayAdapter {
                 if (interpolatedTime == 1){
                     v.findViewById(R.id.detailed_instructions).setVisibility(View.VISIBLE);
                     v.findViewById(R.id.minimal_instructions).setVisibility(View.GONE);
-                    v.findViewById(R.id.visual_representation).setVisibility(View.VISIBLE);
+                    if (hasPicture(pos)) {
+                        v.findViewById(R.id.visual_representation).setVisibility(View.VISIBLE);
+                    } else {
+                        v.findViewById(R.id.visual_representation).setVisibility(View.GONE);
+                    }
+//                    v.findViewById(R.id.note).setVisibility(View.VISIBLE);
+                    ((TextView)v.findViewById(R.id.note)).setText(card.note); // update the note text
 //                    v.measure(View.MeasureSpec.makeMeasureSpec(v.getWidth(), View.MeasureSpec.EXACTLY),
 //                            View.MeasureSpec.makeMeasureSpec(3000, View.MeasureSpec.AT_MOST));
 //                    System.out.println("final height: " + v.getMeasuredHeight());
@@ -297,7 +310,7 @@ public class LessonAdapter extends ArrayAdapter {
         private TextView note;
         public int position = -1;
 
-        public void updateVisibilities(Instruction card){
+        public void updateVisibilities(Instruction card, int position){
             if (card.inTransition){
                 return;
             }
@@ -309,7 +322,12 @@ public class LessonAdapter extends ArrayAdapter {
             } else {
                 minimalInstructions.setVisibility(View.GONE);
                 detailedInstructions.setVisibility(View.VISIBLE);
-                visualInstructions.setVisibility(View.VISIBLE);
+
+                if (hasPicture(position)) {
+                    visualInstructions.setVisibility(View.VISIBLE);
+                } else {
+                    visualInstructions.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }
@@ -351,6 +369,12 @@ public class LessonAdapter extends ArrayAdapter {
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static boolean hasPicture(int pos){
+        List<Integer> picPos = Arrays.asList(2,3,8);
+
+        return picPos.contains(pos);
     }
 
 }

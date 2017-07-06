@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.LinearInterpolator;
@@ -87,13 +89,7 @@ public class LessonActivity extends AppCompatActivity {
         ////////
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setVisibility(View.GONE);
     }
 
     public void updateLessonCompletion(Intent intent){
@@ -121,13 +117,16 @@ public class LessonActivity extends AppCompatActivity {
     private InstructionSet getDetectionInstructions(){
         InstructionSet set = new InstructionSet();
         set.setAdapter(lessonAdapter);
-        Instruction step1 = new Instruction("Turn on your flashlight", "", "Tap to turn on", set);
-        step1.setAction(step1.FLASHLIGHT);
-        step1.setContext(this);
-        Instruction step2 = new Instruction("Go under your bed", "", set);
-        Instruction step3 = new Instruction("Some sort of credit card thing", "", set);
-        Instruction step4 = new Instruction("Something else", "", set);
-        Instruction step5 = new Instruction("Leave the house", "", set);
+        Instruction step1 = new Instruction("Pull your bed away from the wall", "", set);
+        Instruction step2 = new Instruction("Turn on your flashlight", "", "Tap to toggle", set);
+        step2.setContext(this);
+        step2.setAction(step2.FLASHLIGHT);
+        Instruction step3 = new Instruction("With your flashlight, check all dark crevices around the bed",
+                "Some reccomended places to check are: piping/seams of the mattress, where the mattress meets the box spring" +
+                ", any sort of gaps, joints where two pieces of wood meet, screw holes, and headboards", EXPAND, set);
+        Instruction step4 = new Instruction("You're going to look for eggs, feces, cast skins and potentially the bugs themselves", "This is what they look like",
+                EXPAND, set);
+        Instruction step5 = new Instruction("As a tip, swiping a credit card or something thin through gaps will expose the bugs", "", set);
         set.add(step1);
         set.add(step2);
         set.add(step3);
@@ -185,10 +184,10 @@ public class LessonActivity extends AppCompatActivity {
         Instruction step3 = new Instruction("Place everything effected into Proof Laundry Bags", "Strip the bed(s) and seal all linens, pillowcases, mattress pads, blankets and drapes into [Proof laundry bags] or " +
                 "garbage bags.", EXPAND, set);
         step3.image = decodeSampledBitmapFromResource(getResources(), R.drawable.bedroom_bb_post_treatment_diagram_balloons, 175, 175);
-        Instruction step4 = new Instruction("Vacuum up all visible bugs", "Use a [Proof insect vacuum filter] fitted to your household vacuum hose to suck up all visible bed bugs and debris " +
-                "from floors, cracks and crevices, including under furniture, under bed legs, and around the room’s perimeter " +
-                "wherever the wall meets the floor. Once the insect vacuum filter is full of debris/insects, replace with a new insect " +
-                "vacuum filter. After you have finished vacuuming ensure the insect vacuum filter is properly sealed then dispose of " +
+        Instruction step4 = new Instruction("Vacuum up all visible bugs", "Use a [Proof insect vacuum filter] fitted to your vacuum hose, suck up all bed bugs and debris " +
+                "from floors, cracks and crevices, including under furniture, under bed legs, and around the room " +
+                "wherever the wall meets the floor. Once the insect vacuum filter is full of debris/insects, repeat the process. " +
+                "After you have finished vacuuming, dispose of " +
                 "the filter in the garbage.",
                 EXPAND, set);
         Instruction step5 = new Instruction("Pull all furtniture away from the walls", "Once the room is free of all debris and lose items (other than furniture and room fixtures), pull the furniture (beds, " +
@@ -268,6 +267,29 @@ public class LessonActivity extends AppCompatActivity {
         }
 
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        return super.onOptionsItemSelected(item);
+        //return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }
