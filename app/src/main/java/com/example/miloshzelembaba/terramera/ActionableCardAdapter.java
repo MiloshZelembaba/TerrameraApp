@@ -2,10 +2,14 @@ package com.example.miloshzelembaba.terramera;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -52,7 +56,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
         View v = convertView;
 
         int type = getItemViewType(position);
-        if (v == null){
+        if (true){
             if (type == ACTION_CARD){
                 ActionableCard card = (ActionableCard) actionableCards.get(position);
                 v = inflater.inflate(R.layout.actionable_card, parent, false);
@@ -62,12 +66,18 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 TextView cardTitle = v.findViewById(R.id.card_title);
                 cardTitle.setText(card.getTitle());
 
-                if (card.completed){
-                    TextView completionStatus = v.findViewById(R.id.completion_status);
-                    completionStatus.setText("Completed!");
-                }
+//                if (card.completed){
+//                    TextView completionStatus = v.findViewById(R.id.completion_status);
+//                    completionStatus.setText("Completed!");
+//                }
 
                 v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
+                    }
+                });
+                v.findViewById(R.id.begin_button).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
@@ -90,13 +100,13 @@ public class ActionableCardAdapter extends ArrayAdapter {
 
     private void setColour(View v, String title, ActionableCard card){
         if (title.equals(ActionableCardStrings.PREVENTION_HEADER)){
-            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.haloBlue));
+            ((CardView)v.findViewById(R.id.cardView)).setCardBackgroundColor(activity.getResources().getColor(R.color.haloBlue));
             card.setColour(R.color.haloBlue);
         } else if (title.equals(ActionableCardStrings.TREATMENT_HEADER)){
-            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.turqoise));
+            ((CardView)v.findViewById(R.id.cardView)).setCardBackgroundColor(activity.getResources().getColor(R.color.turqoise));
             card.setColour(R.color.turqoise);
         } else if (title.equals(ActionableCardStrings.DETECTION_HEADER)){
-            v.findViewById(R.id.cardView).setBackgroundColor(activity.getResources().getColor(R.color.greenCard));
+            ((CardView)v.findViewById(R.id.cardView)).setCardBackgroundColor(activity.getResources().getColor(R.color.greenCard));
             card.setColour(R.color.greenCard);
         }
 
