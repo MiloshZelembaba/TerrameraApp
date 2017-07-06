@@ -46,6 +46,19 @@ public class LessonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final Activity act = this;
 
+
+        Window window = getWindow();
+        Fade slide = new Fade();
+        window.setAllowEnterTransitionOverlap(true);
+        window.setAllowReturnTransitionOverlap(true);
+        slide.setInterpolator(new LinearInterpolator());
+        //slide.setSlideEdge(Gravity.RIGHT);
+        slide.excludeTarget(android.R.id.statusBarBackground, true);
+        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+        window.setEnterTransition(slide); // The Transition to use to move Views into the initial Scene.
+        window.setReturnTransition(slide);
+        getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gravyGray)));
+
         r = new Thread() {
             @Override
             public void run() {
@@ -57,19 +70,6 @@ public class LessonActivity extends AppCompatActivity {
                 setSupportActionBar(toolbar);
                 final String title = intent.getStringExtra("Title");
                 int colour = intent.getIntExtra("Colour",0);
-
-
-                Window window = getWindow();
-                Fade slide = new Fade();
-                window.setAllowEnterTransitionOverlap(true);
-                window.setAllowReturnTransitionOverlap(true);
-                slide.setInterpolator(new LinearInterpolator());
-                //slide.setSlideEdge(Gravity.RIGHT);
-                slide.excludeTarget(android.R.id.statusBarBackground, true);
-                slide.excludeTarget(android.R.id.navigationBarBackground, true);
-                window.setEnterTransition(slide); // The Transition to use to move Views into the initial Scene.
-                window.setReturnTransition(slide);
-                getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gravyGray)));
 
                 //////////
                 //findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(colour));

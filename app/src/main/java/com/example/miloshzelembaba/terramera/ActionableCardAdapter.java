@@ -133,6 +133,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
         final View header = v.findViewById(R.id.card_header);
         final View title = v.findViewById(R.id.card_title);
         final View beginBtn = v.findViewById(R.id.begin_button);
+        final View fab = ((Activity)context).findViewById(R.id.fab);
 
 
 
@@ -155,6 +156,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 header.setAlpha(1 - interpolatedTime);
                 title.setAlpha(1 - interpolatedTime);
                 beginBtn.setAlpha(1 - interpolatedTime);
+                fab.setAlpha(1 - interpolatedTime);
 
                 if (interpolatedTime == 1){
                     ((MainActivity)context).setUpLesson(card);
