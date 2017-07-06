@@ -1,26 +1,20 @@
 package com.example.miloshzelembaba.terramera;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,14 +34,16 @@ public class LessonAdapter extends ArrayAdapter {
     public final int HEADER = 1;
     public final int LESSON_CARD = 0;
     private int debug = -1;
+    public static String header = "";
 
 
-    public LessonAdapter(Context context, int LayoutRes, ArrayList<ArrayItem> cards){
+    public LessonAdapter(Context context, int LayoutRes, ArrayList<ArrayItem> cards, String header){
         super(context, LayoutRes, cards);
 
         activity = (Activity) context;
         lesson = cards;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.header = header;
     }
 
     @Override
@@ -125,7 +121,7 @@ public class LessonAdapter extends ArrayAdapter {
                             final int targetHeight = text.getMeasuredHeight();
 
                             int imageHeight = 0;
-                            if (hasPicture(currentPosition)) {
+                            if (cardHasPicture(currentPosition)) {
                                 ImageView image = view.findViewById(R.id.visual_representation);
                                 image.measure(View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
                                         View.MeasureSpec.makeMeasureSpec(3000, View.MeasureSpec.AT_MOST));
@@ -273,7 +269,7 @@ public class LessonAdapter extends ArrayAdapter {
                 if (interpolatedTime == 1){
                     v.findViewById(R.id.detailed_instructions).setVisibility(View.VISIBLE);
                     v.findViewById(R.id.minimal_instructions).setVisibility(View.GONE);
-                    if (hasPicture(pos)) {
+                    if (cardHasPicture(pos)) {
                         v.findViewById(R.id.visual_representation).setVisibility(View.VISIBLE);
                     } else {
                         v.findViewById(R.id.visual_representation).setVisibility(View.GONE);
@@ -323,7 +319,7 @@ public class LessonAdapter extends ArrayAdapter {
                 minimalInstructions.setVisibility(View.GONE);
                 detailedInstructions.setVisibility(View.VISIBLE);
 
-                if (hasPicture(position)) {
+                if (cardHasPicture(position)) {
                     visualInstructions.setVisibility(View.VISIBLE);
                 } else {
                     visualInstructions.setVisibility(View.INVISIBLE);
@@ -371,8 +367,16 @@ public class LessonAdapter extends ArrayAdapter {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
-    public static boolean hasPicture(int pos){
-        List<Integer> picPos = Arrays.asList(2,3,8);
+    public static boolean cardHasPicture(int pos){
+        List<Integer> picPos = null;
+
+        if (header.equals(ActionableCardStrings.TREATMENT_HEADER)){
+            picPos = Arrays.asList(2,3,8);
+        } else if (header.equals(ActionableCardStrings.DETECTION_HEADER)){
+            picPos = Arrays.asList(4);
+        } else {
+            picPos = Arrays.asList();
+        }
 
         return picPos.contains(pos);
     }

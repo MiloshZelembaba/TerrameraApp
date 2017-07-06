@@ -13,13 +13,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -27,14 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.miloshzelembaba.terramera.LessonAdapter.decodeSampledBitmapFromResource;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<ArrayItem> actionableCards = new ArrayList<>();
     private ActionableCardAdapter actionableCardAdapter;
-    private LessonAdapter lessonAdapter;
     private Map<String, Boolean> lessonCompletion = new HashMap<>();
 
 

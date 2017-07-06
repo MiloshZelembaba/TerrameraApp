@@ -80,7 +80,7 @@ public class LessonActivity extends AppCompatActivity {
             items.add(i);
         }
 
-        lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items);
+        lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items, header);
 
         set.setAdapter(lessonAdapter);
 
@@ -126,6 +126,7 @@ public class LessonActivity extends AppCompatActivity {
                 ", any sort of gaps, joints where two pieces of wood meet, screw holes, and headboards", EXPAND, set);
         Instruction step4 = new Instruction("You're going to look for eggs, feces, cast skins and potentially the bugs themselves", "This is what they look like",
                 EXPAND, set);
+        step4.image = decodeSampledBitmapFromResource(getResources(), R.drawable.bed_bug_signs, 300, 300);
         Instruction step5 = new Instruction("As a tip, swiping a credit card or something thin through gaps will expose the bugs", "", set);
         set.add(step1);
         set.add(step2);
@@ -184,10 +185,10 @@ public class LessonActivity extends AppCompatActivity {
         Instruction step3 = new Instruction("Place everything effected into Proof Laundry Bags", "Strip the bed(s) and seal all linens, pillowcases, mattress pads, blankets and drapes into [Proof laundry bags] or " +
                 "garbage bags.", EXPAND, set);
         step3.image = decodeSampledBitmapFromResource(getResources(), R.drawable.bedroom_bb_post_treatment_diagram_balloons, 175, 175);
-        Instruction step4 = new Instruction("Vacuum up all visible bugs", "Use a [Proof insect vacuum filter] fitted to your vacuum hose, suck up all bed bugs and debris " +
-                "from floors, cracks and crevices, including under furniture, under bed legs, and around the room " +
+        Instruction step4 = new Instruction("Vacuum all visible bugs", "Use a [Proof insect vacuum filter] fitted to your vacuum to suck up all bed bugs and debris " +
+                "from floors, cracks and crevices, including under furniture, under bed legs, around the room and " +
                 "wherever the wall meets the floor. Once the insect vacuum filter is full of debris/insects, repeat the process. " +
-                "After you have finished vacuuming, dispose of " +
+                "After finishing, dispose of " +
                 "the filter in the garbage.",
                 EXPAND, set);
         Instruction step5 = new Instruction("Pull all furtniture away from the walls", "Once the room is free of all debris and lose items (other than furniture and room fixtures), pull the furniture (beds, " +
