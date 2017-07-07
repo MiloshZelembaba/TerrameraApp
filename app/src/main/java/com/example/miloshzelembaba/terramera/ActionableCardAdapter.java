@@ -159,6 +159,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 fab.setAlpha(1 - interpolatedTime);
 
                 if (interpolatedTime == 1){
+                    ((MainActivity)context).findViewById(R.id.actionable_card_list).setVisibility(View.INVISIBLE);
                     ((MainActivity)context).setUpLesson(card);
                 }
 

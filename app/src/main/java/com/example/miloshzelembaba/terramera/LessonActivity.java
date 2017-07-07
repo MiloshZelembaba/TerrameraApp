@@ -78,22 +78,6 @@ public class LessonActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
 
 
-                Blurb blurb = new Blurb();
-                blurb.setTitle(title);
-                set = getInstructions(header);
-                ArrayList<Instruction> instructions = set.getInstructions();
-                ArrayList<ArrayItem> items = new ArrayList<>();
-                items.add(blurb);
-                for (Instruction i: instructions){
-                    items.add(i);
-                }
-
-                lessonAdapter = new LessonAdapter(act, R.layout.minimal_lesson, items, header);
-
-                set.setAdapter(lessonAdapter);
-
-                ListView listView = (ListView) findViewById(R.id.actionable_card_list);
-                listView.setAdapter(lessonAdapter);
             }
         };
 
