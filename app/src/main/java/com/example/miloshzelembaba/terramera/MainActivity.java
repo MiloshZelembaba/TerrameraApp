@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         lessonAdapter = new LessonAdapter(this, R.layout.minimal_lesson, items, card.getHeader());
-        findViewById(R.id.content_main).setBackgroundColor(getResources().getColor(card.colour));
 
         set.setAdapter(lessonAdapter);
 
         final ListView listView = (ListView) findViewById(R.id.actionable_card_list);
         listView.setVisibility(View.INVISIBLE);
+        listView.setAlpha(0);
         listView.setAdapter(lessonAdapter);
 
 

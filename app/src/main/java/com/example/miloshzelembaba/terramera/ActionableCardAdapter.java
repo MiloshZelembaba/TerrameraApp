@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.media.Image;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -79,14 +82,15 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
+                        ((ListView)activity.findViewById(R.id.actionable_card_list)).smoothScrollToPosition(position);
                         expand(view.findViewById(R.id.cardView), view.findViewById(R.id.card_layout),activity,((ActionableCard)actionableCards.get(position)));
                     }
                 });
                 v.findViewById(R.id.begin_button).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((MainActivity)activity).setUpLesson(((ActionableCard)actionableCards.get(position)));
+                        ((ListView)activity.findViewById(R.id.actionable_card_list)).smoothScrollToPosition(position);
+                        expand(activity.findViewById(R.id.cardView), activity.findViewById(R.id.card_layout),activity,((ActionableCard)actionableCards.get(position)));
                     }
                 });
             } else {
@@ -145,6 +149,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
 
 
         Animation a = new Animation() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.getLayoutParams().height = (int)(baseHeight + (height * interpolatedTime));
@@ -159,6 +164,7 @@ public class ActionableCardAdapter extends ArrayAdapter {
                 fab.setAlpha(1 - interpolatedTime);
 
                 if (interpolatedTime == 1){
+                    ((MainActivity)context).findViewById(R.id.content_main).setBackgroundColor((context).getColor(card.colour));
                     ((MainActivity)context).findViewById(R.id.actionable_card_list).setVisibility(View.INVISIBLE);
                     ((MainActivity)context).setUpLesson(card);
                 }
